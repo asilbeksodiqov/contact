@@ -1,0 +1,639 @@
+/* ============================================
+   BASE STYLES
+   ============================================ */
+   :root {
+    --primary: #2563eb;
+    --primary-dark: #1e40af;
+    --primary-light: #60a5fa;
+    --surface: #ffffff;
+    --background: #f8fafc;
+    --text: #1e293b;
+    --text-light: #64748b;
+    --text-lighter: #94a3b8;
+    --border: #e2e8f0;
+    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    --radius: 16px;
+    --success: #10b981;
+    --error: #ef4444;
+
+    --transition-fast: 150ms;
+    --transition: 300ms;
+    --ease-out: cubic-bezier(0, 0.55, 0.45, 1);
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    --nav-height: 64px;
+    --header-height: 56px;
+}
+
+/* ============================================
+   RESET & GLOBAL
+   ============================================ */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html { height: 100%; overflow: hidden; }
+
+body {
+    height: 100%;
+    font-family: 'Outfit', system-ui, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    overflow: hidden;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+/* ============================================
+   APP WRAPPER
+   ============================================ */
+#app {
+    position: fixed;
+    inset: 0;
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    max-width: 428px;
+    margin: 0 auto;
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.15);
+}
+
+@media (min-width: 429px) {
+    body { background: #e2e8f0; overflow: auto; }
+    html { overflow: auto; }
+    #app { position: relative; height: 100vh; min-height: 600px; }
+}
+
+/* ============================================
+   KIRISH ANIMATSIYASI — umumiy keyframe
+   ============================================ */
+@keyframes fadeSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* ============================================
+   FIXED HEADER
+   ============================================ */
+.fixed-header {
+    flex-shrink: 0;
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    z-index: 50;
+
+    /* 1-element: birinchi paydo bo'ladi */
+    opacity: 0;
+    animation: fadeSlideUp 0.4s var(--ease-out) 0.05s forwards;
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 18px 10px 12px;
+    height: 40px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a1a1a;
+    cursor: pointer;
+    background: rgba(189, 189, 189, 0.1);
+    transition: all var(--transition) var(--ease-out);
+    user-select: none;
+}
+
+.back-btn i { margin-right: 8px; font-size: 13px; }
+
+.back-btn:hover {
+    background: var(--background);
+    border-color: var(--text-light);
+    transform: translateY(-1px);
+}
+
+.back-btn:active {
+    transform: translateY(0);
+    transition: transform var(--transition-fast);
+}
+
+/* ============================================
+   PAGE
+   ============================================ */
+.page {
+    display: none;
+    flex: 1;
+    overflow: hidden;
+    flex-direction: column;
+    padding: 14px 16px 0;
+    /* page o'zi animatsiya qilmaydi — ichidagi elementlar qiladi */
+    opacity: 1;
+}
+
+.page.active { display: flex; }
+
+/* ============================================
+   FORM ICHIDAGI ELEMENTLAR — ketma-ket animatsiya
+   ============================================ */
+
+/* Har bir form elementi boshlang'ich holati */
+.contact-form > *,
+.social-links,
+.contact-type-selector,
+.floating-label-dynamic {
+    opacity: 0;
+    animation: fadeSlideUp 0.42s var(--ease-out) both;
+}
+
+/* Ketma-ket delay — 2-elementdan boshlanadi (1-element = header) */
+.contact-form > *:nth-child(1)  { animation-delay: 0.15s; } /* Ism input         */
+.contact-form > *:nth-child(2)  { animation-delay: 0.22s; } /* Type selector     */
+.contact-form > *:nth-child(3)  { animation-delay: 0.29s; } /* Aloqa input       */
+.contact-form > *:nth-child(4)  { animation-delay: 0.36s; } /* Xabar textarea    */
+.contact-form > *:nth-child(5)  { animation-delay: 0.43s; } /* Yuborish tugmasi  */
+
+/* Social links — form dan keyin */
+.social-links { animation-delay: 0.50s; }
+
+/* ============================================
+   BOTTOM NAV — eng oxirida paydo bo'ladi
+   ============================================ */
+.bottom-nav {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: var(--nav-height);
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
+    z-index: 50;
+}
+
+.nav-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    background: none;
+    border: none;
+    padding: 8px 0;
+    color: var(--text-lighter);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 500;
+    transition: color var(--transition-fast);
+}
+
+.nav-btn i {
+    font-size: 21px;
+    display: block;
+    transition: transform var(--transition) var(--bounce);
+}
+
+.nav-btn.active { color: var(--primary); }
+.nav-btn.active i { transform: translateY(-2px) scale(1.12); }
+.nav-btn:active i { transform: scale(0.88); transition: transform var(--transition-fast); }
+
+/* ============================================
+   CONTACT FORM
+   ============================================ */
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+/* ============================================
+   FLOATING LABEL
+   ============================================ */
+.floating-label {
+    position: relative;
+}
+
+.floating-label input,
+.floating-label textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    font-size: 14px;
+    font-family: inherit;
+    background: var(--surface);
+    color: var(--text);
+    transition: border-color var(--transition) var(--ease-out),
+                box-shadow var(--transition) var(--ease-out);
+    display: block;
+}
+
+.floating-label textarea {
+    resize: none;
+    height: 100px;
+    min-height: 100px;
+    max-height: 100px;
+}
+
+.floating-textarea {
+    flex-shrink: 0;
+    position: relative;
+}
+
+.floating-textarea textarea {
+    height: 100px;
+    min-height: 100px;
+    max-height: 100px;
+}
+
+.floating-label label {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-lighter);
+    font-size: 14px;
+    pointer-events: none;
+    transition: all var(--transition) var(--ease-out);
+    background: var(--surface);
+    padding: 0 4px;
+    line-height: 1;
+}
+
+.floating-textarea label {
+    top: 18px;
+    transform: none;
+}
+
+.floating-label input:focus + label,
+.floating-label.has-value label,
+.floating-label input:not(:placeholder-shown) + label {
+    top: 0;
+    font-size: 11px;
+    color: var(--primary);
+    transform: translateY(-50%);
+}
+
+.floating-textarea textarea:focus + label,
+.floating-textarea.has-value label,
+.floating-textarea textarea:not(:placeholder-shown) + label {
+    top: 0;
+    font-size: 11px;
+    color: var(--primary);
+    transform: translateY(-50%);
+}
+
+.floating-label input:focus,
+.floating-label textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* ============================================
+   CONTACT TYPE SELECTOR
+   ============================================ */
+.contact-type-selector {
+    flex-shrink: 0;
+}
+
+.type-options {
+    display: flex;
+    gap: 6px;
+    background: var(--background);
+    padding: 5px;
+    border-radius: 12px;
+    border: 1.5px solid var(--border);
+}
+
+.type-option {
+    flex: 1;
+    padding: 9px 8px;
+    border: none;
+    background: transparent;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all var(--transition) var(--ease-out);
+}
+
+.type-option i { font-size: 15px; }
+
+.type-option.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 3px 10px rgba(37, 99, 235, 0.2);
+}
+
+.type-option:not(.active):hover {
+    background: rgba(37, 99, 235, 0.08);
+    color: var(--primary);
+}
+
+@media (max-width: 360px) {
+    .option-text { display: none; }
+}
+
+/* ============================================
+   DINAMIK ALOQA MAYDONI
+   ============================================ */
+.floating-label-dynamic {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.floating-label-dynamic input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    font-size: 14px;
+    font-family: inherit;
+    background: var(--surface);
+    color: var(--text);
+    transition: border-color var(--transition) var(--ease-out),
+                box-shadow var(--transition) var(--ease-out),
+                padding-left var(--transition) var(--ease-out);
+}
+
+.floating-label-dynamic.phone-mode input    { padding-left: 76px; }
+.floating-label-dynamic.telegram-mode input { padding-left: 52px; }
+.floating-label-dynamic.email-mode input    { padding-left: 16px; }
+
+.contact-prefix {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    pointer-events: none;
+    border-right: 1.5px solid var(--border);
+    padding-right: 10px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    z-index: 2;
+    transition: opacity var(--transition);
+}
+
+.floating-label-dynamic.email-mode .contact-prefix {
+    display: none;
+}
+
+.floating-label-dynamic label {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-lighter);
+    font-size: 14px;
+    pointer-events: none;
+    transition: all var(--transition) var(--ease-out);
+    background: var(--surface);
+    padding: 0 4px;
+    line-height: 1;
+    z-index: 1;
+}
+
+.floating-label-dynamic.phone-mode label    { left: 76px; }
+.floating-label-dynamic.telegram-mode label { left: 52px; }
+.floating-label-dynamic.email-mode label    { left: 16px; }
+
+.floating-label-dynamic input:focus + label,
+.floating-label-dynamic.has-value label,
+.floating-label-dynamic input:not(:placeholder-shown) + label {
+    top: 0;
+    left: 16px;
+    font-size: 11px;
+    color: var(--primary);
+    transform: translateY(-50%);
+}
+
+.floating-label-dynamic input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* ============================================
+   YUBORISH TUGMASI
+   ============================================ */
+.btn {
+    width: 100%;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition) var(--ease-out);
+    flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btn.primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn.primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn.primary:active {
+    transform: translateY(0);
+    transition: transform var(--transition-fast);
+}
+
+.btn i { flex-shrink: 0; }
+
+.fa-spin { animation: spin 1s linear infinite; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ============================================
+   IJTIMOIY TARMOQLAR
+   ============================================ */
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    padding: 12px 0 14px;
+    flex-shrink: 0;
+}
+
+.social-link {
+    width: 46px;
+    height: 46px;
+    background: var(--background);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 18px;
+    border: 1.5px solid var(--border);
+    transition: all var(--transition) var(--ease-out);
+    position: relative;
+    overflow: hidden;
+}
+
+.social-link::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--primary);
+    opacity: 0;
+    transition: opacity var(--transition);
+}
+
+.social-link:hover {
+    transform: translateY(-2px);
+    border-color: transparent;
+    box-shadow: var(--shadow);
+}
+
+.social-link:hover::before { opacity: 1; }
+.social-link:active { transform: translateY(0); }
+
+.social-link i {
+    position: relative;
+    z-index: 1;
+    transition: color var(--transition);
+}
+
+.social-link:hover i { color: white; }
+
+.social-link[href*="mailto"]:hover::before   { background: #ea4335; }
+.social-link[href*="t.me"]:hover::before     { background: #0088cc; }
+.social-link[href*="x.com"]:hover::before    { background: #000000; }
+.social-link[href*="instagram"]:hover::before {
+    background: linear-gradient(45deg, #405de6, #833ab4, #e1306c, #fd1d1d);
+}
+
+/* ============================================
+   TOAST
+   ============================================ */
+.toast {
+    position: fixed;
+    top: -110px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 13px 16px;
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: var(--shadow-lg);
+    z-index: 9998;
+    opacity: 0;
+    border-left: 4px solid var(--success);
+    width: calc(100% - 32px);
+    max-width: 380px;
+    transition: top 0.38s var(--ease-out), opacity 0.28s;
+}
+
+.toast.show { opacity: 1; top: 16px; }
+
+.toast-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 17px;
+}
+
+.toast.success { border-left-color: var(--success); }
+.toast.success .toast-icon { color: var(--success); }
+.toast.error   { border-left-color: var(--error); }
+.toast.error .toast-icon   { color: var(--error); }
+.toast.info    { border-left-color: var(--primary); }
+.toast.info .toast-icon    { color: var(--primary); }
+.toast.warning { border-left-color: #f59e0b; }
+.toast.warning .toast-icon { color: #f59e0b; }
+
+.toast-content { flex: 1; min-width: 0; }
+
+.toast-title {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 2px;
+}
+
+.toast-message { font-size: 12px; color: var(--text-light); line-height: 1.4; }
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .fixed-header,
+    .bottom-nav,
+    .contact-form > *,
+    .social-links,
+    .contact-type-selector,
+    .floating-label-dynamic {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
+
+/* ============================================
+   PRINT
+   ============================================ */
+@media print {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .bottom-nav, .fixed-header { display: none !important; }
+}
