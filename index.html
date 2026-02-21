@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="uz" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asilbek Sodiqov | Bog`lanish</title>
+    <meta name="description" content="Asilbek Sodiqov bilan bog`lanish.">
+    <meta name="author" content="Asilbek Sodiqov">
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="contact.css">
+</head>
+<body>
+    <!--
+        #app tuzilishi (about.html kabi):
+        ┌──────────────────────┐  ← fixed-header (flex-shrink:0)
+        │  ← Bog`lanish        │
+        ├──────────────────────┤
+        │   Form + Social      │  ← .page (flex:1, overflow:hidden)
+        │                      │
+        ├──────────────────────┤
+        │  🏠   👤   ✈️        │  ← bottom-nav (flex-shrink:0)
+        └──────────────────────┘
+    -->
+    <main id="app">
+
+        <!-- 1. DOIM QADALGAN HEADER -->
+        <div class="fixed-header">
+            <button class="back-btn" onclick="window.location.href='index.html'">
+                <i class="fas fa-arrow-left"></i>
+                <span>Bog`lanish</span>
+            </button>
+        </div>
+
+        <!-- 2. ASOSIY KONTENT (flex:1) -->
+        <div class="page active" id="contact">
+
+            <form class="contact-form" id="contactForm">
+
+                <!-- Ism -->
+                <div class="floating-label">
+                    <input type="text" id="name" name="name" placeholder=" " required>
+                    <label for="name">Ismingiz</label>
+                </div>
+
+                <!-- Aloqa turi tanlash -->
+                <div class="contact-type-selector">
+                    <div class="type-options">
+                        <button type="button" class="type-option active" data-type="phone">
+                            <i class="fas fa-phone"></i>
+                            <span class="option-text">Telefon</span>
+                        </button>
+                        <button type="button" class="type-option" data-type="telegram">
+                            <i class="fab fa-telegram"></i>
+                            <span class="option-text">Telegram</span>
+                        </button>
+                        <button type="button" class="type-option" data-type="email">
+                            <i class="fas fa-envelope"></i>
+                            <span class="option-text">Email</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Dinamik aloqa maydoni -->
+                <div class="floating-label-dynamic phone-mode" id="contactFieldContainer">
+                    <div class="contact-prefix" id="contactPrefix">+998</div>
+                    <input type="tel" id="contact_input" name="contact_input"
+                           required
+                           data-type="phone">
+                    <label for="contact_input" id="contactLabel">Telefon raqamingiz</label>
+                </div>
+
+                <!-- Xabar -->
+                <div class="floating-label floating-textarea">
+                    <textarea id="message" name="message" placeholder=" "
+                              rows="3" required></textarea>
+                    <label for="message">Xabaringiz</label>
+                </div>
+
+                <!-- Yuborish tugmasi -->
+                <button type="submit" class="btn primary">
+                    <i class="fas fa-paper-plane"></i>
+                    Xabarni Yuborish
+                </button>
+
+            </form>
+
+            <!-- Ijtimoiy tarmoqlar -->
+            <div class="social-links">
+                <a href="mailto:info@sodiqov.uz" class="social-link">
+                    <i class="fas fa-envelope"></i>
+                </a>
+                <a href="https://t.me/asilbek_sodiqov" class="social-link">
+                    <i class="fab fa-telegram"></i>
+                </a>
+                <a href="https://x.com/asilxon_sodiqov" class="social-link">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://instagram.com/asilxon_sodiqov" class="social-link">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </div>
+
+        </div><!-- /.page -->
+
+        <!-- 3. DOIM QADALGAN BOTTOM NAV -->
+        <nav class="bottom-nav">
+            <button class="nav-btn" onclick="window.location.href='index.html'">
+                <i class="fas fa-home"></i>
+            </button>
+            <button class="nav-btn" onclick="window.location.href='about.html'">
+                <i class="fas fa-user"></i>
+            </button>
+            <button class="nav-btn active">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </nav>
+
+    </main>
+
+    <script src="contact.js"></script>
+</body>
+</html>
